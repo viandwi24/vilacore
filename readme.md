@@ -28,9 +28,47 @@ Sebernanya untuk membuat plugin sudah di contohkan di plugin bernama 'example', 
 - lalu isi dari file `tes.php` dan `info.json` adalah sebagai berikut :
     * #### App/Core/tes/tes.php
     ```
-    tes
+    <?php
+    namespace App\Core;
+    use App\Core\BaseCore as Core;
+
+    class example implements Core {
+
+        public function map()
+        {
+        }
+
+        public function register()
+        {
+        }
+
+        public function boot()
+        {
+            // membuat menu di sidebar admin
+            customMenu()->add([
+                'type' => 'normal',
+                'name' => 'Example Normal',
+                'icon' => 'fa-feather',
+                'link' => route('example.index')
+            ]);
+        }
+
+        public function load()
+        {
+        }
+    }
     ```
-    * ### App/Core/tes/info.json
+    * #### App/Core/tes/info.json
+    ```
+    {
+        "name": "Examples",
+        "version": "1.0.0",
+        "description": "Examples plugin.",
+        "author": "viandwi24",
+        "email": "fiandwi0424@gmail.com",
+        "settingPage": "setting"
+    }
+    ```
 
 
 
