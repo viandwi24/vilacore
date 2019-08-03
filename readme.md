@@ -9,18 +9,18 @@
 - `php artisan serve` and open `localhost:8000/v-admin`
 
 
-## Plugin
+# Plugin
 
-### Mendaftarkan Plugin
+## Mendaftarkan Plugin
 Plugin ada di folder `App/Core/`, lalu setiap plugin harus didaftarkan pada `App/Core/list.json` dan isinya berikut :
-#### load
+### load
 Plugin yang ingin didaftarkan harus di tulis dalam 'load', mendaftarkan plugin di load menggunakan nama package plugin
-#### enable
+### enable
 Enable adalah plugin yang akan diaktifkan, sama seperti load untuk mendaftarkanya cukup tulis nama package
 
 
 
-### Fungsi - Fungsi Plugin
+## Fungsi - Fungsi Plugin
 ```
 public function map()
 {
@@ -46,7 +46,7 @@ public function load()
 
 
 
-### Membuat Plugin Sederhana
+## Membuat Plugin Sederhana
 Sebernanya untuk membuat plugin sudah di contohkan di plugin bernama 'example', mari kita bahas :
 - tentukan nama package untuk plugin yang akan dibuat, misalnya disini memakai `tes`
 - buat folder dan file di `App/Core/` sesuai dengan nama package yang telah ditentukan tadi
@@ -55,7 +55,7 @@ Sebernanya untuk membuat plugin sudah di contohkan di plugin bernama 'example', 
     * [Buat File] App/Core/tes/info.json
     * [Buat File] App/Core/tes/routes.php
 - lalu isi dari file `tes.php` dan `info.json` adalah sebagai berikut :
-    * #### App/Core/tes/tes.php
+    * ### App/Core/tes/tes.php
     ```
     <?php
     namespace App\Core;
@@ -89,7 +89,7 @@ Sebernanya untuk membuat plugin sudah di contohkan di plugin bernama 'example', 
     }
     ```
 
-    * #### App/Core/tes/info.json
+    * ### App/Core/tes/info.json
     ```
     {
         "name": "Examples",
@@ -100,7 +100,7 @@ Sebernanya untuk membuat plugin sudah di contohkan di plugin bernama 'example', 
     }
     ```
 
-    * #### App/Core/tes/routes.php
+    * ### App/Core/tes/routes.php
     ```
     <?php
     Route::group([
