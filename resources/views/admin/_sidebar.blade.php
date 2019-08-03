@@ -1,0 +1,100 @@
+@php
+ $route_name = \Route::current()->getName();
+@endphp
+
+<!-- Sidebar -->
+<div class="sidebar">    
+    <!-- Sidebar Menu -->
+    <nav class="mt-2">
+    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        <li class="nav-header" style="padding-left: 1rem;">MAIN</li>
+        <li class="nav-item">
+            <a href="{{ route('admin.dashboard') }}" class="nav-link {{ $route_name == 'admin.dashboard' ? 'active' : '' }}">
+            <i class="nav-icon fas fa-home"></i>
+            <p>
+                Dashboard
+            </p>
+            </a>
+        </li>
+
+        @foreach (customMenu()->load() as $menu)
+
+            @if($menu['type'] == 'treeview')
+                <?php $tr_ada = false; ?>
+                @foreach ($menu['menu'] as $item)
+                    <?php if (Request::url() == @$item['link']) $tr_ada = true; ?>
+                @endforeach
+                <li class="nav-item has-treeview {{ $tr_ada ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link">
+                        @isset($menu['icon'])
+                        <i class="fas far {{ $menu['icon'] }} nav-icon"></i>
+                        @endisset
+                        <p>
+                        {!! $menu['name'] !!}
+                        <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        @foreach ($menu['menu'] as $item)
+                            <li class="nav-item">
+                                <a href="{{ @$item['link'] }}" class="nav-link {{ Request::url() == @$item['link'] ? 'active' : '' }}">
+                                    <i class="nav-icon fas far {{ @$item['icon'] }}"></i>
+                                    <p>
+                                    {!! $item['name'] !!}
+                                    </p>
+                                </a>
+                            </li>                            
+                        @endforeach
+                    </ul>
+                </li>
+            @elseif($menu['type'] == 'normal')
+                <li class="nav-item">
+                    <a href="{{ @$menu['link'] }}" class="nav-link {{ Request::url() == @$menu['link'] ? 'active' : '' }}">
+                        <i class="nav-icon fas far {{ @$menu['icon'] }}"></i>
+                        <p>
+                        {!! $menu['name'] !!}
+                        </p>
+                    </a>
+                </li>
+            @elseif($menu['type'] == 'header')
+                <li class="nav-header">{!! $menu['name'] !!}</li>     
+            @endif
+        @endforeach
+
+
+        <li class="nav-header">PENGATURAN</li>
+        <?php $li = ''; $ada = false; ?>
+        @foreach (plugin()->getAllWithInfo(true) as $plugin)
+            <?php 
+            if (!isset($plugin->settingPage)) continue;
+            if($route_name == ($plugin->package . '.' . $plugin->settingPage)) $ada = true;
+            $li .= '
+            <li class="nav-item">
+                <a href="'.route($plugin->package . '.' . $plugin->settingPage).'" class="nav-link '. ($route_name == ($plugin->package . '.' . $plugin->settingPage) ? 'active' : '') .'">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>'.$plugin->name.'</p>
+                </a>
+            </li>';
+            ?>                         
+        @endforeach
+        <li class="nav-item has-treeview {{ ($ada || $route_name == 'admin.alat') ? 'menu-open' : '' }}">
+            <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-plug"></i>
+                <p>
+                Alat
+                <i class="right fas fa-angle-left"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="{{ route('admin.alat') }}" class="nav-link {{ $route_name == 'admin.alat' ? 'active' : '' }}">
+                        <i class="far fa-plus-square nav-icon"></i>
+                        <p>Kelola</p>
+                    </a>
+                </li>
+                {!! $li !!}
+            </ul>
+        </li>
+    </ul>
+    </nav>
+</div>
