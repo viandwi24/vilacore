@@ -2,6 +2,8 @@
 namespace App\Helpers;
 
 class Admin {
+  private static $dashboardInfoBox = [];
+  private static $dashboardWidget = [];
 
     public static function contentHeader($name, $path)
     {
@@ -34,5 +36,46 @@ class Admin {
 
 
       return $tag_s . $el_path . $tag_e;
+    }
+
+    public static function addDashboardWidget($items)
+    {
+      array_push(self::$dashboardWidget, $items);
+    }
+
+    public static function getDashboardWidget()
+    {
+      $items = self::$dashboardWidget;
+      return $items;
+    }
+
+    public static function addDashboardInfoBox($items)
+    {
+      array_push(self::$dashboardInfoBox, $items);
+    }
+
+    public static function getDashboardInfoBox()
+    {
+      $items = self::$dashboardInfoBox;
+      $tag_s = '<div class="row">';
+      $el_list = '';
+      $tag_e = '</div>';
+
+      foreach($items as $item)
+      {
+        $el_list .= '<div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box">
+                <span class="info-box-icon '.@$item['icon-box'].' elevation-1"><i class="fas far '.@$item['icon'].'"></i></span>
+                <div class="info-box-content">
+                <span class="info-box-text">'.$item['title'].'</span>
+                <span class="info-box-number">
+                    '.$item['value'].'
+                </span>
+                </div>
+            </div>
+        </div>';
+      }
+
+      return $tag_s . $el_list . $tag_e;
     }
 }

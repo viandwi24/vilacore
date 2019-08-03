@@ -2,7 +2,8 @@
     "name": "Page Edit",
     "description": "Edit Plugin Lain Secara GUI.",
     "version": "1.0.0",
+    "required": "1.0.5",
     "author": "viandwi24",
     "email": "fiandwi0424@gmail.com",
-    "settingPage": "setting"
+    "settingPage": "about"
 }

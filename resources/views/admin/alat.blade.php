@@ -19,17 +19,44 @@
                     <th>Status</th>
                     <th>Author</th>
                     <th>Version</th>
+                    <th>Core Required</th>
                     <th>Description</th>
                     <th>...</th>
                     </tr>
                 </thead>
                 <tbody>
+                    <?php $not_compatible = 0; ?>
                     @foreach (plugin()->getAllWithInfo() as $plugin)
                         <tr>
                             <td>{{ $plugin->name }}</td>
                             <td><span class="badge badge-{{ $plugin->status ? 'success' : 'danger' }}">{{ $plugin->status ? 'Aktif' : 'Tidak Aktif' }}</span></td>
                             <td>{{ $plugin->author }}</td>
                             <td>V{{ $plugin->version }}</td>
+                            <td>
+                                @php
+                                    $compatible = false;
+                                    $required = explode('.', $plugin->required);
+                                    $core = explode('.', env('VILACORE_CORE_VERSION', "0.0.0"));
+
+                                    for ($i=0; $i < 3; $i++) { 
+                                        if ($required[$i] == 'x') {
+                                            $compatible = true;
+                                        } elseif ($required[$i] == $core[$i]) {
+                                            $compatible = true;
+                                        } else {
+                                            $compatible = false;
+                                        }
+                                    }
+                                @endphp
+
+                                @if (!$compatible)
+                                    <?php $not_compatible++; ?>
+                                    <span style="color:red;">V{{ $plugin->required }}</span>    
+                                    <span class="badge badge-danger">!</span>  
+                                @else
+                                    <span style="color:green;">V{{ $plugin->required }}</span>                             
+                                @endif
+                            </td>
                             <td>{{ $plugin->description }}</td>
                             <td>
                                 <div class="dropdown">
@@ -48,6 +75,20 @@
                 </tbody>
                 </table>
             </div>
+            @if ($not_compatible > 0)
+            <div class="card-footer">
+                
+                <span style="color: red;">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    {{ $not_compatible }} Plugin Yang Kemungkinan Tidak Dapat Berjalan Dengan Baik. 
+                    Silahkan perbarui versi plugin tersebut.
+                </span>
+            </div>                
+            @endif
+        </div>
+
+        <div>
+            <strong>Core Version : </strong> {{ env('VILACORE_CORE_VERSION', "0.0.0") }}
         </div>
     </div>
 </div>

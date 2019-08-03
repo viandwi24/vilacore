@@ -56,14 +56,7 @@ class VilacoreServiceProvider extends ServiceProvider
                 $this->coreLoad[$plugin]->boot();
             }
 
-
-            // load
-            $plugins = $this->getCoreAll(true);
-            foreach ($plugins as $plugin) {
-                plugin()->setActive($plugin);
-                // load
-                $this->coreLoad[$plugin]->load();
-            }
+            plugin()->saveCoreLoad($this->coreLoad);
         });
     }
 

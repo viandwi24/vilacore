@@ -1,7 +1,13 @@
 @extends('layouts.admin')
 
 @section('content.header')
-    {!! admin()->contentHeader('Edit "' . explode('/', $path)[count(explode('/', $path))-1] . '"' , [['name' => 'Admin'], ['name' => 'Page Edit', 'active' => '']]) !!}
+    {!! admin()->contentHeader('Edit "' . explode('/', $path)[count(explode('/', $path))-1] . '"' , [
+        ['name' => 'Admin'], 
+        ['name' => 'Page Edit', 'link' => route('pageEdit.index')],
+        ['name' => $package, 'link' => route('pageEdit.explore', ['package' => $package])],
+        ['name' => 'Edit'],
+        ['name' => '"'.explode('/', $path)[count(explode('/', $path))-1].'"', 'active' => '']
+    ]) !!}
 @endsection
 
 @section('content')
@@ -66,9 +72,8 @@
 
 @push('js')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.5/ace.js"></script>
-    <script src="{{ asset('assets/admin/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
     <script>
-        const Toast = Swal.mixin({
+        var Toast = Swal.mixin({
             toast: true,
             position: 'top-end',
             showConfirmButton: false,
@@ -107,7 +112,6 @@
 @endpush
 
 @push('css')
-    <link rel="stylesheet" href="{{ asset('assets/admin/plugins/sweetalert2/sweetalert2.min.css') }}">
     <style type="text/css" media="screen">
         #editor { 
             position: absolute;

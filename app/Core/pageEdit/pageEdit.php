@@ -20,6 +20,17 @@ class pageEdit implements Core {
             'icon' => 'fa-pen-square',
             'link' => route('pageEdit.index')
         ]);
+        
+        // plugin widget
+        $plugin_count = count(plugin()->getAll(true));
+        admin()->addDashboardInfoBox([
+            'title' => 'Plugin Aktif',
+            'icon' => 'fa-plug',
+            'icon-box' => 'bg-info',
+            'value' => $plugin_count
+        ]);
+        
+        admin()->addDashboardWidget("pageEdit::views.widget");
     }
     
     public function map()
@@ -27,7 +38,11 @@ class pageEdit implements Core {
         customRoute()->add(__DIR__ . '/routes.php');
     } 
 
-    public function load()
+    public function load($request, $next)
+    {
+    }
+    
+    public function terminate($request)
     {
     }
 }

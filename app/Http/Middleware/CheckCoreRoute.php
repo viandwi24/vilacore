@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use Illuminate\Support\Facades\Route;
 use Closure;
 
 class CheckCoreRoute
@@ -15,7 +16,46 @@ class CheckCoreRoute
      */
     public function handle($request, Closure $next)
     {
-        // dd(  );
+        $coreLoad = plugin()->getCoreLoad();
+
+        // load
+        $plugins = plugin()->getAll(true);
+        foreach ($plugins as $plugin) {
+            // set active
+            plugin()->setActive($plugin);
+            
+            // save core load
+            plugin()->saveCoreLoad($coreLoad);
+            
+            // load
+            $state = $coreLoad[$plugin]->load($this->getRequest($request), $next);
+            if (!empty($state)) return $state;
+        }
+        
+        // save core load
+        plugin()->saveCoreLoad($coreLoad);
+
         return $next($request);
+    }
+
+
+    public function terminate($request, $response)
+    {
+        $coreLoad = plugin()->getCoreLoad();
+
+        // terminate
+        $plugins = plugin()->getAll(true);
+        foreach ($plugins as $plugin) {
+            plugin()->setActive($plugin);
+            // terminate
+            $coreLoad[$plugin]->terminate($this->getRequest($request));
+        }
+    }
+
+    private function getRequest($request)
+    {
+        $route = Route::getRoutes()->match($request);
+        $request->route = $route;
+        return $request;
     }
 }

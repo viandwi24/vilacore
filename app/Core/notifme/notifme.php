@@ -2,6 +2,7 @@
 
 namespace App\Core;
 
+use Illuminate\Support\Facades\Route;
 use App\Core\BaseCore as Core;
 
 class notifme implements Core {
@@ -17,9 +18,13 @@ class notifme implements Core {
     {
     }
 
-    public function load()
+    public function load($request, $next)
     {
-        echo '
-        <script>alert("This is alert!! .:notifme:. ");</script>';
+        echo '<script>alert("This is alert in-load!! notifme:load ");</script>';
+    }
+
+    public function terminate($request)
+    {
+        echo '<script>alert("This is alert in-terminate!! notifme:terminate");</script>';
     }
 }

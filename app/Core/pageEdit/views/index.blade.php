@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content.header')
-    {!! admin()->contentHeader('Plugin Page Editor', [['name' => 'Admin'], ['name' => 'Page Edit', 'active' => '']]) !!}
+    {!! admin()->contentHeader('Plugin Page Editor', [['name' => 'Admin'], ['name' => 'Page Edit'],  ['name' => 'Daftar Plugin', 'active' => '']]) !!}
 @endsection
 
 @section('content')
@@ -11,6 +11,19 @@
                 <div class="card-header">
                     <h3 class="card-title">Daftar Plugin</h3>
                     <div class="card-tools">
+                        <form style="display: none;" method="post" id="import" enctype="multipart/form-data" action="{{ route('pageEdit.import') }}">
+                            @csrf
+                            <input onchange="fileImportChange(event)" type="file" name="file" id="fileImport">
+                        </form>
+                        <script>
+                            function fileImportChange(e) {
+                                if (e.target.files.length) { $('form#import').submit(); }
+                            }
+                        </script>
+                        <button onclick="$('#fileImport').click();" type="button" class="btn btn-sm btn-primary">
+                            <i class="fas fa-file"></i>
+                            Import .zip
+                        </button>
                         <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-default">
                             <i class="fas fa-plus"></i>
                             Buat Plugin Baru
@@ -18,7 +31,7 @@
                     </div>
                 </div>
                 <div class="card-body table-responsive p-0">
-                    <table class="table table-hover">
+                    <table class="table table-hover" style="min-height: 40vh;">
                         <thead>
                             <tr>
                                 <th>Nama</th>
@@ -38,9 +51,12 @@
                                         </button>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                             <a class="dropdown-item disabled" href="#">{{ $plugin->package }}</a>
-                                            <a class="dropdown-item" href="#">Edit info.json</a>
-                                            <a class="dropdown-item" href="#">Edit {{ $plugin->package }}.php</a>
+                                            <a class="dropdown-item" href="{{ route('pageEdit.explore.edit', ['package' => $plugin->package, 'path' => '/info.json']) }}">Edit info.json</a>
+                                            <a class="dropdown-item" href="{{ route('pageEdit.explore.edit', ['package' => $plugin->package, 'path' => '/' . $plugin->package . '.php']) }}">Edit {{ $plugin->package }}.php</a>
                                             <div class="dropdown-divider"></div>
+                                            <form id="del-{{ $plugin->package }}" action="{{ route('pageEdit.delete', ['package' => $plugin->package]) }}" method="POST">@csrf</form>
+                                            <a onclick="event.preventDefault();$('form#del-{{ $plugin->package }}').submit();" href="{{ route('pageEdit.delete', ['package' => $plugin->package]) }}" class="dropdown-item" href="#">Hapus Plugin</a>
+                                            <a target="_blank" href="{{ route('pageEdit.export', ['package' => $plugin->package]) }}" class="dropdown-item" href="#">Ekspor .zip</a>
                                             <a href="{{ route('pageEdit.explore', ['package' => $plugin->package]) }}" class="dropdown-item" href="#">Jelajahi</a>
                                         </div>
                                     </div>
@@ -63,7 +79,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="{{ route('pageEdit.create') }}">
+                <form id="create" method="POST" action="{{ route('pageEdit.create') }}">
                     @csrf
                     <div class="form-group">
                         <label for="exampleInputEmail1">Nama</label>
@@ -82,6 +98,10 @@
                         <input type="string" name="version" class="form-control" value="1.0.0">
                     </div>
                     <div class="form-group">
+                        <label for="exampleInputEmail1">Syarat Versi Core</label>
+                        <input type="string" name="required" class="form-control" value="{{ env('VILACORE_CORE_VERSION', '1.0.0') }}">
+                    </div>
+                    <div class="form-group">
                         <label for="exampleInputEmail1">Deskripsi</label>
                         <textarea name="description" class="form-control">Description your plugin...</textarea>
                     </div>
@@ -89,7 +109,7 @@
             </div>
             <div class="modal-footer justify-content-between">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                <button type="button" class="btn btn-primary" onclick="$('form').submit();">Buat</button>
+                <button type="button" class="btn btn-primary" onclick="$('form#create').submit();">Buat</button>
             </div>
             </div>
         </div>

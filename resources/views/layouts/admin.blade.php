@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="{{ asset('assets/admin/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <link rel="stylesheet" href="{{ asset('assets/admin/plugins/sweetalert2/sweetalert2.min.css') }}">
   @stack('css')
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -26,7 +27,7 @@
     <nav class="main-header navbar navbar-expand navbar-white navbar-light">
         <!-- Left navbar links -->
         <ul class="navbar-nav">
-          <li class="nav-item"><a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a></li>
+          <li class="nav-item"><a onclick="togglepushmenu()" class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a></li>
           <li class="nav-item d-none d-sm-inline-block"><a href="{{ route('admin.dashboard') }}" class="nav-link">Home</a></li>
         </ul>
         <!-- Right navbar links -->
@@ -75,7 +76,7 @@
     <strong>Copyright &copy; 2019 <a href="viandwi24.github.io/vilacore">Vilacore</a>.</strong>
     All rights reserved.
     <div class="float-right d-none d-sm-inline-block">
-      <b>Version</b> 1.0.0-beta.1
+      <b>Version</b> {{ env('VILACORE_VERSION', "0.0.0") }}-{{ env('VILACORE_VERSION_DESCRIPTION', 'stable') }}
     </div>
   </footer>
 
@@ -92,10 +93,60 @@
     <script src="{{ asset('assets/admin/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
     <!-- FastClick -->
     <script src="{{ asset('assets/admin/plugins/fastclick/fastclick.js') }}"></script>
+    <!-- SweetAlert -->
+    <script src="{{ asset('assets/admin/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
     <!-- AdminLTE App -->
     <script src="{{ asset('assets/admin/dist/js/adminlte.js') }}"></script>
     <!-- Vue -->
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script>
+      var Toast = Swal.mixin({ toast: true, position: 'top-end', showConfirmButton: false, timer: 4000 });
+      $(window).ready(function(){
+        checklaststatepushmenu();
+      });
+      
+      function togglepushmenu() {
+        $state = !$('body').hasClass('sidebar-collapse');
+        if ($state == true) {
+          localStorage.setItem("pushmenu", false);
+        } else {
+          localStorage.setItem("pushmenu", true);
+        }
+      }
+      function checklaststatepushmenu() {
+        $state = localStorage.getItem("pushmenu");
+        if ($state == null) {
+          localStorage.setItem("pushmenu", false);
+        }
+
+        if ($state == "false") {
+          $('body').addClass('sidebar-collapse');
+        }
+      }
+    </script>
     @stack('js')
+    
+
+    @if (Session::has('alert'))
+        <?php $alert = Session::get('alert'); ?>
+        <script>
+          Toast.fire({
+              type: '{{ $alert["type"] }}',
+              title: '{{ $alert["text"] }}'
+          });
+        </script>
+    @endif
+
+    @if ($errors->any())
+      <script>
+        @foreach ($errors->all() as $error)
+          Toast.fire({
+              type: 'error',
+              title: '{{ $error }}'
+          });
+        @endforeach
+      </script>
+  @endif
+    
 </body>
 </html>

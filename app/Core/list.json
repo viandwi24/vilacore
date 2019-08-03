@@ -1,1 +1,1 @@
-{"load":["example","notifme","pageEdit"],"enable":["pageEdit","example"]}
+{"load":{"1":"notifme","2":"pageEdit","3":"example"},"hide":[],"enable":["pageEdit"],"blockRunInRoute":["alat"]}

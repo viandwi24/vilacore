@@ -5,5 +5,13 @@
 @stop
 
 @section('content')
-    tes
+    {!! admin()->getDashboardInfoBox() !!}
+    
+    @foreach (admin()->getDashboardWidget() as $item)
+        <div class="row">
+            <div class="col-12">
+                @include($item)
+            </div>
+        </div>        
+    @endforeach
 @stop
