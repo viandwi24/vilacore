@@ -18,6 +18,34 @@ Plugin yang ingin didaftarkan harus di tulis dalam 'load', mendaftarkan plugin d
 #### enable
 Enable adalah plugin yang akan diaktifkan, sama seperti load untuk mendaftarkanya cukup tulis nama package
 
+
+
+### Fungsi - Fungsi Plugin
+```
+public function map()
+{
+}
+
+public function register()
+{
+}
+
+public function boot()
+{
+}
+
+public function load()
+{
+}
+```
+- `register` adalah fungsi yang akan di jalankan ketika laravel melakukan persiapan booting
+- `boot` adalah fungsi yang akan di jalankan ketika laravel selesai melakukan booting
+- `map` adalah fungsi yang dapat anda manfaatkan untuk mapping seperti mapping routes
+- `load` adalah fungsi yang akan di jalankan setelah semua fungsi boot dijalankan
+
+
+
+
 ### Membuat Plugin Sederhana
 Sebernanya untuk membuat plugin sudah di contohkan di plugin bernama 'example', mari kita bahas :
 - tentukan nama package untuk plugin yang akan dibuat, misalnya disini memakai `tes`
@@ -25,6 +53,7 @@ Sebernanya untuk membuat plugin sudah di contohkan di plugin bernama 'example', 
     * [Buat Folder] App/Core/tes
     * [Buat File] App/Core/tes/tes.php
     * [Buat File] App/Core/tes/info.json
+    * [Buat File] App/Core/tes/routes.php
 - lalu isi dari file `tes.php` dan `info.json` adalah sebagai berikut :
     * #### App/Core/tes/tes.php
     ```
@@ -36,6 +65,7 @@ Sebernanya untuk membuat plugin sudah di contohkan di plugin bernama 'example', 
 
         public function map()
         {
+            customRoute()->add(__DIR__ . '/routes.php');
         }
 
         public function register()
@@ -58,6 +88,7 @@ Sebernanya untuk membuat plugin sudah di contohkan di plugin bernama 'example', 
         }
     }
     ```
+
     * #### App/Core/tes/info.json
     ```
     {
@@ -65,9 +96,20 @@ Sebernanya untuk membuat plugin sudah di contohkan di plugin bernama 'example', 
         "version": "1.0.0",
         "description": "Examples plugin.",
         "author": "viandwi24",
-        "email": "fiandwi0424@gmail.com",
-        "settingPage": "setting"
+        "email": "fiandwi0424@gmail.com"
     }
+    ```
+
+    * #### App/Core/tes/routes.php
+    ```
+    <?php
+    Route::group([
+        'prefix' => plugin()->getAdminRoutePrefix()
+    ], function(){
+        Route::get('/', function(){
+            return "Halaman Plugin Pertama Saya";
+        })->name('index');
+    });
     ```
 
 
