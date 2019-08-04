@@ -18,14 +18,22 @@ class PluginPageEditor extends BaseController
             'file' => 'required|file|mimes:zip'
         ]);
 
-        $package_name = str_replace('.'.$request->file('file')->getClientOriginalExtension(), '', $request->file('file')->getClientOriginalName());
 
         $zip = new \ZipArchive;
         $res = $zip->open($request->file('file'));
         if ($res === TRUE) {
-            $zip->extractTo(app_path('Core/'));
+            mkdir(app_path('Core/tmp'), 0755);
+            $zip->extractTo(app_path('Core/tmp'));
             $zip->close();
             //berhasil
+
+            //cek info
+            $path = app_path('Core/tmp/info.json');
+            $info = file_get_contents($path);
+            $info = json_decode($info, true);
+            $package_name = $info['package'];
+            rename(app_path('Core/tmp'), app_path('Core/'.$package_name));
+            
 
             // add to list.json
             $plugins = file_get_contents(app_path('Core/list.json'));
@@ -45,8 +53,9 @@ class PluginPageEditor extends BaseController
         $path = app_path('Core/' . $package);
         $path = explode('/', $path);
         $path = implode('/', $path);
+        $package_info = plugin()->getInfo($package);
         
-        $zip_file = $package.'.zip';
+        $zip_file = $package.'-'.$package_info->version.'.zip';
         $zip = new \ZipArchive();
         $zip->open($zip_file, \ZipArchive::CREATE | \ZipArchive::OVERWRITE);
         $files = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path));
@@ -54,7 +63,7 @@ class PluginPageEditor extends BaseController
         {
             if (!$file->isDir()) {
                 $filePath     = $file->getRealPath();
-                $relativePath = $package.'/' . substr($filePath, strlen($path) + 1);
+                $relativePath = '/' . substr($filePath, strlen($path) + 1);
                 $zip->addFile($filePath, $relativePath);
             }
         }
@@ -101,12 +110,13 @@ class PluginPageEditor extends BaseController
             'required' => 'required',
             'description' => 'required',
             'author' => 'required',
+            'email' => 'required|email',
         ]);
 
         mkdir(app_path('Core/' . $request->package), 0755);
         
         // info.json
-        $info = '{ "name": "'.$request->name.'", "description": "'.$request->description.'", "version": "'.$request->version.'", "required": "'.$request->required.'", "author": "'.$request->author.'" }';
+        $info = '{ "name": "'.$request->name.'", "package": "'.$request->package.'", "description": "'.$request->description.'", "version": "'.$request->version.'", "required": "'.$request->required.'", "author": "'.$request->author.'", "email": "'.$request->email.'" }';
         file_put_contents(app_path('Core/' . $request->package.'/info.json'), $info);
 
         // add to list.json
@@ -135,16 +145,18 @@ class {package} implements Core {
     {
     }    
 
-    public function load($request, $next)
+    public function load({request}, {next})
     {
     } 
 
-    public function terminate($request)
+    public function terminate({request})
     {
     }
 }        
 EOT;
         $index_file = str_replace('{package}', $request->package, $index_file);
+        $index_file = str_replace('{request}', '$request', $index_file);
+        $index_file = str_replace('{next}', '$next', $index_file);
         file_put_contents(app_path('Core/' . $request->package.'/'.$request->package.'.php'), $index_file);
 
         return redirect()->back();

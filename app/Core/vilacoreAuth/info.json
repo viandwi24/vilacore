@@ -1,0 +1,1 @@
+{ "name": "Auth Setting for Admin", "package": "vilacoreAuth", "description": "Menambahkan menu pengaturan dan profil autentikasi di halaman Admin.", "version": "1.0.0", "required": "1.0.7", "author": "viandwi24", "email": "fiandwi0424@gmail.com" }

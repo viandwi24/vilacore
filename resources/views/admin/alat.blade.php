@@ -1,5 +1,7 @@
 @extends('layouts.admin')
 
+@section('title', admin()->getAdminTitlePage('Kelola Alat'))
+
 @section('content.header')
     {!! admin()->contentHeader('Alat', [['name' => 'Admin'], ['name' => 'Alat'], ['name' => 'Kelola', 'active' => '']]) !!}          
 @stop
@@ -66,6 +68,9 @@
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         <a class="dropdown-item disabled" href="#">{{ $plugin->package }}</a>
                                         <a class="dropdown-item" href="{{ route('admin.alat.toggle', ['package' => $plugin->package]) }}">{{ $plugin->status ? 'Nonaktifkan' : 'Aktifkan' }}</a>
+                                        {{-- <button onclick="openPerm({{ json_encode(plugin()->getPermissionPlugin($plugin->package)) }})" class="dropdown-item">
+                                            Check Permission
+                                        </button> --}}
                                         {{-- <a class="dropdown-item" href="#">Something else here</a> --}}
                                     </div>
                                 </div>
@@ -93,3 +98,11 @@
     </div>
 </div>
 @stop
+
+@push('js')
+    <script>
+        function openPerm(packageInfo) {
+            $('#modal-default').modal('show');
+        }
+    </script>
+@endpush

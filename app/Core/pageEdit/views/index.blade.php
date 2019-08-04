@@ -1,5 +1,7 @@
 @extends('layouts.admin')
 
+@section('title', admin()->getAdminTitlePage('Plugin Page Editor'))
+
 @section('content.header')
     {!! admin()->contentHeader('Plugin Page Editor', [['name' => 'Admin'], ['name' => 'Page Edit'],  ['name' => 'Daftar Plugin', 'active' => '']]) !!}
 @endsection
@@ -83,23 +85,27 @@
                     @csrf
                     <div class="form-group">
                         <label for="exampleInputEmail1">Nama</label>
-                        <input type="string" name="name" class="form-control" value="Example">
+                        <input type="text" name="name" class="form-control" value="Example">
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Nama Package</label>
-                        <input type="string" name="package" class="form-control" value="example">
+                        <input type="text" name="package" class="form-control" value="example">
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Author</label>
+                        <label for="exampleInputEmail1">Author Name</label>
                         <input type="string" name="author" class="form-control" value="viandwi24">
                     </div>
                     <div class="form-group">
+                        <label for="exampleInputEmail1">Author Email</label>
+                        <input type="email" name="email" class="form-control" value="fiandwi0424@gmail.com">
+                    </div>
+                    <div class="form-group">
                         <label for="exampleInputEmail1">Versi</label>
-                        <input type="string" name="version" class="form-control" value="1.0.0">
+                        <input type="text" name="version" class="form-control" value="1.0.0">
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Syarat Versi Core</label>
-                        <input type="string" name="required" class="form-control" value="{{ env('VILACORE_CORE_VERSION', '1.0.0') }}">
+                        <input type="text" name="required" class="form-control" value="{{ env('VILACORE_CORE_VERSION', '1.0.0') }}">
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Deskripsi</label>

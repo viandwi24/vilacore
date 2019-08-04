@@ -17,18 +17,19 @@ Route::group([
     Route::get('/', function () {
         return view('admin.dashboard');
     })->name('dashboard');
-
-    Route::get('/tes', function () {
-        return redirect()->back()->with(['alert' => ['type' => 'error', 'text' => 'Tes anjir']]);
-    });
     
     $alat_enable = env('PLUGIN_SETTING_SHOW', true);
     if ($alat_enable) {
         Route::get('/alat', function () {
             return view('admin.alat');
         })->name('alat');
+        Route::get('/alat/d/{package}', function ($package) {
+            if (!plugin()->check($package, true)) abort(404);
+            $plugin = plugin()->getInfo($package);
+            return view('admin.deskripsi', compact('plugin'));
+        })->name('alat.deskripsi');
         Route::get('/alat/toggle/{package}', function ($package) {
-            if (!plugin()->check($package)) abort(404);
+            if (!plugin()->check($package, true)) abort(404);
             $last_package = plugin()->getInfo($package);
             if (plugin()->toggle($package)) {
                 return redirect()->back()->with(['alert' => ['type' => ($last_package->status ? 'error' : 'success'), 'text' => $package . ' telah di aktifkan.']]);

@@ -1,5 +1,7 @@
 @extends('layouts.admin')
 
+@section('title', admin()->getAdminTitlePage('Jelajahi "' . $package . '" - Plugin Page Editor'))
+
 @section('content.header')
     {!! admin()->contentHeader('Jelajahi "'.$package.'"', [
         ['name' => 'Admin'], 
@@ -30,7 +32,7 @@
                     <input type="text" class="form-control" value="{{ $path }}" disabled>
                     <table class="table table-hover">
                         @if ($current_path != '/')
-                        <tr>
+                        <tr ondblclick="$(this).find('a')[0].click();">
                             <td colspan="3">
                                 <a href="explore?path={{ $prev_path }}">...</a>
                             </td>
@@ -38,15 +40,15 @@
                         @endif
                         <?php $i = 0; ?>
                         @foreach ($files as $item)
-                            <tr>
+                            <tr ondblclick="{{ ($item->type == 'folder') ? "$(this).find('a')[0].click();" : '' }}">
                                 <td>
                                     @if ($item->type == 'folder')
                                         <a href="explore?path={{ $current_path . $item->item }}">
-                                            <i class="fas fa-{{ $item->type }} mr-4"></i>
+                                            <i class="fas fa-{{ $item->type }} mr-2"></i>
                                             {{ $item->item }}
                                         </a>
                                     @else
-                                        <i class="fas fa-{{ $item->type }} mr-4"></i>
+                                        <i class="fas fa-{{ $item->type }} mr-2"></i>
                                         {{ $item->item }}
                                     @endif
                                 </td>

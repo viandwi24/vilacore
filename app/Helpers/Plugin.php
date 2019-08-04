@@ -4,6 +4,8 @@ namespace App\Helpers;
 class Plugin {
     private static $active = null;
     private static $coreLoad = [];
+    private static $route = [];
+    private static $menu = [];
 
     public static function saveCoreLoad($core)
     {
@@ -115,5 +117,32 @@ class Plugin {
         $plugins = self::getAll();
         return (array_search($name, $plugins) === false) ? false : true;
     }
-    
+
+    public static function getVersion()
+    {
+        return env('VILACORE_CORE_VERSION', "1.0.0");
+    }
+
+    public function setRoutePlugin($route)
+    {
+        self::$route = $route;
+    }
+
+    public static function setMenuPlugin($package, $menu)
+    {
+        self::$menu[$package] = $menu;
+    }
+
+    public static function getPermissionPlugin($package)
+    {
+        if (!self::getInfo($package)->status) return (object) [];
+        return (object) [
+            "package" => $package,
+            "route" => customRoute()->getRoutePlugin($package),
+            "routeFile" => customRoute()->getRouteFilePlugin($package),
+            "menu" => customMenu()->getMenuPlugin($package),
+            "dashboardInfoBox" => admin()->getDashboardInfoBoxPlugin($package),
+            "dashboardWidget" => admin()->getDashboardWidgetPlugin($package),
+        ];
+    }
 }

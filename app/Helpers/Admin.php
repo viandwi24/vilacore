@@ -3,7 +3,9 @@ namespace App\Helpers;
 
 class Admin {
   private static $dashboardInfoBox = [];
+  private static $dashboardInfoBoxPlugin = [];
   private static $dashboardWidget = [];
+  private static $dashboardWidgetPlugin = [];
 
     public static function contentHeader($name, $path)
     {
@@ -40,6 +42,7 @@ class Admin {
 
     public static function addDashboardWidget($items)
     {
+      self::$dashboardWidgetPlugin[plugin()->getActive()][] = $items;
       array_push(self::$dashboardWidget, $items);
     }
 
@@ -48,9 +51,17 @@ class Admin {
       $items = self::$dashboardWidget;
       return $items;
     }
+    
+    public static function getDashboardWidgetPlugin($package){
+      return self::$dashboardWidgetPlugin[$package];
+    }
+    public static function getDashboardInfoBoxPlugin($package){
+      return self::$dashboardInfoBoxPlugin[$package];
+    }
 
     public static function addDashboardInfoBox($items)
     {
+      self::$dashboardInfoBoxPlugin[plugin()->getActive()][] = $items;
       array_push(self::$dashboardInfoBox, $items);
     }
 
@@ -77,5 +88,11 @@ class Admin {
       }
 
       return $tag_s . $el_list . $tag_e;
+    }
+
+    public static function getAdminTitlePage($title = '')
+    {
+      if ($title == '') return env('APP_NAME', 'Vilacore') . ' Admin';
+      return $title . ' | ' . env('APP_NAME', 'Vilacore') . ' Admin';
     }
 }

@@ -41,7 +41,6 @@ class VilacoreServiceProvider extends ServiceProvider
     {           
         // blade custom
         $this->customBlade();
-        // $this->stack();
 
 
         $this->app->booted(function() {
@@ -55,17 +54,10 @@ class VilacoreServiceProvider extends ServiceProvider
                 // boot
                 $this->coreLoad[$plugin]->boot();
             }
-
             plugin()->saveCoreLoad($this->coreLoad);
         });
     }
 
-
-    public function stack()
-    {
-        // $currentPath= Route::getFacadeRoot();
-        // dd(  $currentPath );
-    }
 
     /**
      * Get All Plugin Core

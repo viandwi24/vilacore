@@ -1,5 +1,7 @@
 @extends('layouts.admin')
 
+@section('title', admin()->getAdminTitlePage('Edit "' . explode('/', $path)[count(explode('/', $path))-1] . '" - Plugin Page Editor'))
+
 @section('content.header')
     {!! admin()->contentHeader('Edit "' . explode('/', $path)[count(explode('/', $path))-1] . '"' , [
         ['name' => 'Admin'], 
@@ -43,7 +45,13 @@
                             <option value="tomorrow_night">tomorrow_night</option>
                             <option value="twilight">twilight</option>
                         </select>
-                        <a href="{{ url()->previous() }}" class="btn btn-sm btn-danger">
+                        <?php
+                        $tes = str_replace('%2F', '/', route('pageEdit.explore', ['package' => $package, 'path' => str_replace(explode('/', $path)[count(explode('/', $path))-1], '', str_replace(app_path('Core/'.$package), '', $path) )]));
+                        $tes = explode('/', $tes);
+                        unset($tes[count($tes)-1]);
+                        $tes = implode('/', $tes);
+                        ?>
+                        <a href="{{ $tes }}" class="btn btn-sm btn-danger">
                             <i class="fas fa-chevron-left"></i>
                             Kembali
                         </a>

@@ -25,6 +25,5 @@ class notifme implements Core {
 
     public function terminate($request)
     {
-        echo '<script>alert("This is alert in-terminate!! notifme:terminate");</script>';
     }
 }

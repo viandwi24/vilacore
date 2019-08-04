@@ -48,7 +48,11 @@ class CheckCoreRoute
         foreach ($plugins as $plugin) {
             plugin()->setActive($plugin);
             // terminate
-            $coreLoad[$plugin]->terminate($this->getRequest($request));
+            try {
+                $state = $coreLoad[$plugin]->terminate($this->getRequest($request));
+            } catch (\Throwable $th) {
+                return false;
+            }
         }
     }
 

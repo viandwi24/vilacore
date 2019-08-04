@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>{{ env('APP_NAME', 'Vilacore') }} Admin</title>
+  <title>@yield('title')</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Font Awesome -->
@@ -18,10 +18,12 @@
   <link rel="stylesheet" href="{{ asset('assets/admin/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <!-- Alert -->
   <link rel="stylesheet" href="{{ asset('assets/admin/plugins/sweetalert2/sweetalert2.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/admin/plugins/toastr/toastr.min.css') }}">
   @stack('css')
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition sidebar-mini layout-fixed layout-footer-fixed layout-navbar-fixed">
   <div class="wrapper">
     <!-- Navbar -->
     <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -73,9 +75,10 @@
   </div>
 
   <footer class="main-footer">
-    <strong>Copyright &copy; 2019 <a href="viandwi24.github.io/vilacore">Vilacore</a>.</strong>
-    All rights reserved.
-    <div class="float-right d-none d-sm-inline-block">
+    <strong>&copy; 2019 <a href="viandwi24.github.io/vilacore">Vilacore</a></strong> by<strong>
+      <a style="color: grey;" target="_blank" href="https://fb.com/viandwi24">viandwi24</a>
+    </strong>
+    <div class="float-right d-sm-inline-block">
       <b>Version</b> {{ env('VILACORE_VERSION', "0.0.0") }}-{{ env('VILACORE_VERSION_DESCRIPTION', 'stable') }}
     </div>
   </footer>
@@ -93,8 +96,9 @@
     <script src="{{ asset('assets/admin/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
     <!-- FastClick -->
     <script src="{{ asset('assets/admin/plugins/fastclick/fastclick.js') }}"></script>
-    <!-- SweetAlert -->
+    <!-- Alert -->
     <script src="{{ asset('assets/admin/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+    <script src="{{ asset('assets/admin/plugins/toastr/toastr.min.js') }}"></script>
     <!-- AdminLTE App -->
     <script src="{{ asset('assets/admin/dist/js/adminlte.js') }}"></script>
     <!-- Vue -->
@@ -140,10 +144,8 @@
     @if ($errors->any())
       <script>
         @foreach ($errors->all() as $error)
-          Toast.fire({
-              type: 'error',
-              title: '{{ $error }}'
-          });
+          console.log('{{ $error }}');
+          toastr.error('{{ $error }}')
         @endforeach
       </script>
   @endif
