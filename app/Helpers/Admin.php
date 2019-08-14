@@ -53,10 +53,10 @@ class Admin {
     }
     
     public static function getDashboardWidgetPlugin($package){
-      return self::$dashboardWidgetPlugin[$package];
+      return isset(self::$dashboardWidgetPlugin[$package]) ? self::$dashboardWidgetPlugin[$package] : [];
     }
     public static function getDashboardInfoBoxPlugin($package){
-      return self::$dashboardInfoBoxPlugin[$package];
+      return isset(self::$dashboardInfoBoxPlugin[$package]) ? self::$dashboardInfoBoxPlugin[$package] : [];
     }
 
     public static function addDashboardInfoBox($items)

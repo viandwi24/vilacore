@@ -1,1 +1,1 @@
-{"load":{"1":"notifme","2":"pageEdit","5":"vilacoreAuth","6":"vilacoreSetting"},"hide":[],"enable":{"0":"pageEdit","2":"vilacoreAuth"},"blockRunInRoute":["alat"]}
+{"load":{"1":"notifme","2":"pageEdit","5":"vilacoreAuth","6":"vilacoreSetting"},"hide":[],"enable":["vilacoreSetting","vilacoreAuth","pageEdit"],"blockRunInRoute":["alat"]}

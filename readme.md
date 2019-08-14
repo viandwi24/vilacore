@@ -34,14 +34,19 @@ public function boot()
 {
 }
 
-public function load()
+public function load($request, $next)
+{
+}
+
+public function terminate($request)
 {
 }
 ```
 - `register` adalah fungsi yang akan di jalankan ketika laravel melakukan persiapan booting
 - `boot` adalah fungsi yang akan di jalankan ketika laravel selesai melakukan booting
 - `map` adalah fungsi yang dapat anda manfaatkan untuk mapping seperti mapping routes
-- `load` adalah fungsi yang akan di jalankan setelah semua fungsi boot dijalankan
+- `load` adalah fungsi yang akan di jalankan setelah semua fungsi boot dijalankan (dijalankan di middleware utama)
+- `terminate` adalah fungsi yang akan di jalankan setelah semua halaman di render (dijalankan di middleware utama)
 
 
 
@@ -83,7 +88,11 @@ Sebernanya untuk membuat plugin sudah di contohkan di plugin bernama 'example', 
             ]);
         }
 
-        public function load()
+        public function load($request, $next)
+        {
+        }
+
+        public function terminate($request)
         {
         }
     }

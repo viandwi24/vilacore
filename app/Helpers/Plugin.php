@@ -19,11 +19,11 @@ class Plugin {
 
     public static function getAll($enableOnly = false)
     {
-        error_reporting(E_ERROR);
+        // error_reporting(E_ERROR);
         $list = file_get_contents(app_path('Core/list.json'));
         $list = json_decode($list, true);
 
-        error_reporting();
+        // error_reporting();
         $show = $enableOnly ? $list['enable'] : $list['load'];
 
         foreach ($list['hide'] as $item) {

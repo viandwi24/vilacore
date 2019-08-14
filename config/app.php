@@ -179,6 +179,9 @@ return [
         App\Providers\CustomRoute::class,
         App\Providers\VilacoreServiceProvider::class,
 
+
+        Barryvdh\Debugbar\ServiceProvider::class,
+        Brotzka\DotenvEditor\DotenvEditorServiceProvider::class,
     ],
 
     /*
@@ -228,7 +231,10 @@ return [
         'Str' => Illuminate\Support\Str::class,
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
-        'View' => Illuminate\Support\Facades\View::class,        
+        'View' => Illuminate\Support\Facades\View::class,  
+        
+        'Debugbar' => Barryvdh\Debugbar\Facade::class,   
+        'DotenvEditor' => Brotzka\DotenvEditor\DotenvEditorFacade::class,   
     ],
 
 ];

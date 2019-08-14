@@ -36,15 +36,16 @@
                             <td>V{{ $plugin->version }}</td>
                             <td>
                                 @php
-                                    $compatible = false;
+                                    $compatible = true;
                                     $required = explode('.', $plugin->required);
                                     $core = explode('.', env('VILACORE_CORE_VERSION', "0.0.0"));
 
-                                    for ($i=0; $i < 3; $i++) { 
+                                    for ($i=2; $i >= 0; $i--) { 
+                                        // echo $i;
                                         if ($required[$i] == 'x') {
-                                            $compatible = true;
+                                            // $compatible = true;
                                         } elseif ($required[$i] == $core[$i]) {
-                                            $compatible = true;
+                                            // $compatible = true;
                                         } else {
                                             $compatible = false;
                                         }

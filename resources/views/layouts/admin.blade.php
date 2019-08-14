@@ -3,6 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="csrf-token" content="{{ csrf_token() }}">   
+  @stack('meta') 
   <title>@yield('title')</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -75,7 +77,7 @@
   </div>
 
   <footer class="main-footer">
-    <strong>&copy; 2019 <a href="viandwi24.github.io/vilacore">Vilacore</a></strong> by<strong>
+    <strong>&copy; 2019 <a href="https://github.com/viandwi24/vilacore">Vilacore</a></strong> by<strong>
       <a style="color: grey;" target="_blank" href="https://fb.com/viandwi24">viandwi24</a>
     </strong>
     <div class="float-right d-sm-inline-block">

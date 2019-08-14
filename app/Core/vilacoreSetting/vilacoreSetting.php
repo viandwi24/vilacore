@@ -14,15 +14,23 @@ class vilacoreSetting implements Core {
             "name" => "Vilacore",
             "icon" => "fa-cogs",
             "menu" => [
-                ["name" => "Env", "icon" => "file-invoice", "link" => route('vilacoreSetting.env')],
+                ["name" => "Env", "icon" => "fa-file-invoice", "link" => route('vilacoreSetting.env')],
+                ["name" => "Artisan", "icon" => "fa-terminal", "link" => route('vilacoreSetting.artisan')],
                 // ["name" => "Kelola Akun Admin", "icon" => "fa-users", "link" => route('vilacoreAuth.kelola')],
             ]
+        ]);
+
+        admin()->addDashboardInfoBox([
+            'title' => 'App Env',
+            'icon' => 'fa-wrench',
+            'icon-box' => (env("APP_ENV", "production") == 'local' ? 'bg-danger' : 'bg-warning'),
+            'value' => ucfirst(env("APP_ENV", "production"))
         ]);
     }
     
     public function map()
     {
-        customRoute()->add(__DIR__ . '/routes.php');
+        customRoute()->add(__DIR__ . '/routes.php', []);
     }    
 
     public function load($request, $next)
