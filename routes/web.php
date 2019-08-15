@@ -37,6 +37,25 @@ Route::group([
                 return redirect()->back()->with(['alert' => ['type' => ($last_package->status ? 'error' : 'success'), 'text' => $package . ' telah di nonaktifkan.']]);
             }
         })->name('alat.toggle');
+        Route::get('/alat/prioritas', function(){
+            return view('admin.alat_prioritas');
+        })->name('prioritas');
+        Route::post('/alat/prioritas', function(){
+            $request = app()->request;
+            $pluginNew = [];
+            foreach(json_decode($request->json) as $item)
+            {
+                $pluginNew[] = $item->package;
+            }
+
+            $plugins = file_get_contents(app_path('Core/list.json'));
+            $plugins = json_decode($plugins, true);
+            $plugins['enable'] = $pluginNew;
+            $plugins = json_encode($plugins);
+            file_put_contents(app_path('Core/list.json'), $plugins);
+
+            return redirect()->back()->with(['alert' => ['type' => 'success', 'text' => 'Berhasil menyimpan perubahan.']]);
+        })->name('prioritas.save');
     }
 });
 

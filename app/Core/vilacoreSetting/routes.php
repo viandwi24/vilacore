@@ -15,10 +15,3 @@ Route::group([
     Route::get('/artisan', 'Controllers\ArtisanController@index')->name('artisan');
     Route::post('/artisan', 'Controllers\ArtisanController@run')->name('artisan.run');
 });
-
-
-// Route::group([
-//     "prefix" => plugin()->getAdminRoutePrefix(),
-// ], function(){
-//     Route::post('/artisan/run', '\Emir\Webartisan\WebartisanController@actionRpc')->name('artisan.run');
-// });

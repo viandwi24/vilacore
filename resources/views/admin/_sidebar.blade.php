@@ -108,12 +108,12 @@
 
 
         {{-- // MENU PENGATURAN --}}
-        @if (env('ADMIN_SETTING_HEADER', true))
+        {{-- @if (env('ADMIN_SETTING_HEADER', true)) --}}
         <li class="nav-header">PENGATURAN</li>
-        @endif
+        {{-- @endif --}}
 
         {{-- // ALAT --}}
-        @if (env('PLUGIN_SETTING_SHOW', true) && env('ADMIN_SETTING_HEADER', true))
+        @if (env('PLUGIN_SETTING_SHOW', true))
             <?php $li = ''; $ada = false; ?>
             @foreach (plugin()->getAllWithInfo(true) as $plugin)
                 @php
@@ -127,7 +127,7 @@
                         </a>
                     </li>'; ?>
             @endforeach
-            <li class="nav-item has-treeview {{ ($ada || $route_name == 'admin.alat') ? 'menu-open' : '' }}">
+            <li class="nav-item has-treeview {{ ($ada || $route_name == 'admin.alat' || $route_name == 'admin.prioritas') ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link">
                     <i class="nav-icon fas fa-plug"></i>
                     <p>
@@ -140,6 +140,12 @@
                         <a href="{{ route('admin.alat') }}" class="nav-link {{ $route_name == 'admin.alat' ? 'active' : '' }}">
                             <i class="far fa-plus-square nav-icon"></i>
                             <p>Kelola</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('admin.prioritas') }}" class="nav-link {{ $route_name == 'admin.prioritas' ? 'active' : '' }}">
+                            <i class="fas fa-flag-checkered nav-icon"></i>
+                            <p>Prioritas</p>
                         </a>
                     </li>
                     {!! $li !!}
