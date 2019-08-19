@@ -1,3 +1,5 @@
+![screenshot preview](https://raw.githubusercontent.com/viandwi24/vilacore/master/ss.png)
+
 ## Install
 
 - `git clone https://github.com/viandwi24/vilacore`
