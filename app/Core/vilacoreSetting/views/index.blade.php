@@ -28,9 +28,9 @@
                         <a target="_blank" href="{{ route('vilacoreSetting.env.backup') }}" class="btn btn-sm btn-primary">
                             <i class="fas fa-download"></i> Backup
                         </a>
-                        <button onclick="$('form#env').submit();" class="btn btn-sm btn-warning">
+                        <a href="#" onclick="$('form#env').submit();" class="btn btn-sm btn-warning">
                             <i class="fas fa-sync"></i> Perbarui
-                        </button>
+                        </a>
                         <button onclick="$('#addModal').modal('show');" class="btn btn-sm btn-success">
                             <i class="fas fa-plus"></i> Tambah
                         </button>
@@ -53,18 +53,21 @@
                                         <input type="text" name="{{ $key }}" id="i-{{ $key }}" value="{{ $item }}" class="form-control">
                                     </td>
                                     <td>
-                                        <form style="display:none;" id="del-{{ $key }}" action="{{ route('vilacoreSetting.env.delete') }}" method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            <input type="hidden" name="key" value="{{ $key }}">
-                                        </form>
-                                        <button onclick="$('form#del-{{ $key }}').submit();" class="btn btn-danger">
+                                        <button type="button" onclick="$('form#del-{{ $key }}').submit();" class="btn btn-danger">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </td>
                                 </tr>                                
                                 @endforeach
                             </form>
+
+                            @foreach ($env as $key => $item)
+                            <form style="display:none;" id="del-{{ $key }}" action="{{ route('vilacoreSetting.env.delete') }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <input type="hidden" name="key" value="{{ $key }}">
+                            </form>                    
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
