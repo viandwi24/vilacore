@@ -2,9 +2,8 @@
     "name": "Page Edit",
     "package": "pageEdit",
     "description": "Edit Plugin Lain Secara GUI.",
-    "version": "1.0.0",
+    "version": "1.5.0",
     "required": "1.0.7",
     "author": "viandwi24",
-    "email": "fiandwi0424@gmail.com",
-    "settingPage": "about"
+    "email": "fiandwi0424@gmail.com"
 }

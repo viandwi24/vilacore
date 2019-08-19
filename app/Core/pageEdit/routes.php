@@ -15,6 +15,8 @@ Route::group([
     Route::get('/{package}/explore/edit', 'Controllers\PluginPageEditor@explore_edit')->name('explore.edit');
     Route::post('/{package}/explore/edit', 'Controllers\PluginPageEditor@explore_edit_save')->name('explore.edit.save');
 
+    /** STORE */
+    Route::get('/store', 'Controllers\PluginStore@index')->name('store.index');
 
     /** SETTING */
     Route::get('/about', function(){

@@ -20,6 +20,12 @@ class pageEdit implements Core {
             'icon' => 'fa-pen-square',
             'link' => route('pageEdit.index')
         ]);
+        customMenu()->add([
+            'type' => 'normal',
+            'name' => 'Plugin Store',
+            'icon' => 'fa-store',
+            'link' => route('pageEdit.store.index')
+        ]);
         
         // plugin widget
         $plugin_count = count(plugin()->getAll(true));
