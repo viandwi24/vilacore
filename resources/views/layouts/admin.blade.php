@@ -104,7 +104,7 @@
     <!-- AdminLTE App -->
     <script src="{{ asset('assets/admin/dist/js/adminlte.js') }}"></script>
     <!-- Vue -->
-    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="{{ asset('assets/admin/dist/js/vue.js') }}"></script>
     <script>
       var Toast = Swal.mixin({ toast: true, position: 'top-end', showConfirmButton: false, timer: 4000 });
       $(window).ready(function(){
