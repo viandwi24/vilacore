@@ -39,17 +39,20 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="item, index in plugin">
+                    <tr v-for="item, index in plugin" v-bind:style="(item.hide) ? 'background: rgba(0,0,0,.2);' : ''">
                         <th>@{{ index+1 }}</th>
                         <td>@{{ item.name }}</td>
                         <td>@{{ item.package }}</td>
-                        <td>
+                        <td v-if="!item.hide">
                             <button v-on:click="up(index)" class="btn btn-primary btn-sm">
                                 <i class="fas fa-chevron-up"></i>
                             </button>
                             <button v-on:click="down(index)" class="btn btn-danger btn-sm">
                                 <i class="fas fa-chevron-down"></i>
                             </button>
+                        </td>
+                        <td v-else>
+                            <i class="fas fa-exclamation-triangle"></i> Hide Plugin
                         </td>
                     </tr>      
                 </tbody>
@@ -65,24 +68,20 @@
         var app = new Vue({
             el: '#table-plugin',
             data: {
-                plugin: {!! json_encode(plugin()->getAllWithInfo(true), true) !!}
+                plugin: {!! json_encode(plugin()->getAllWithInfo(true, true), true) !!}
             },
             methods: {
-                buildTable() {
-                    
-                },
-                down(i){
-                    if (app.plugin[i+1] != null) {
+                down(i, loncat = 1){
+                    if (app.plugin[i+loncat] != null) {
                         let plugin = app.plugin;
                         app.plugin = [];
-                        let temp = plugin[i+1];
-                        plugin[i+1] = plugin[i];
+                        let temp = plugin[i+loncat];
+                        plugin[i+loncat] = plugin[i];
                         plugin[i] = temp;
 
                         app.plugin = plugin;
                     }
 
-                    app.buildTable();
                 },
                 up(i){
                     if (app.plugin[i-1] != null) {
@@ -95,7 +94,6 @@
                         app.plugin = plugin;
                     }
 
-                    app.buildTable();
                 },
                 save() {
                     var form = $('<form method="post">{{ csrf_field() }}<input id="json" name="json" /></form>');
@@ -105,7 +103,7 @@
                 },
             },
             mounted(){
-                this.buildTable();
+                console.log(this.plugin);
             }
         });
     </script>

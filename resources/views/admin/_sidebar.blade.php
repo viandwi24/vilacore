@@ -119,7 +119,7 @@
                 @php
                     if ($route_name == 'admin.alat.deskripsi' && isset(\Route::current()->parameters['package']) && \Route::current()->parameters['package'] == $plugin->package) $ada = true;
                 @endphp
-                <?php $li .= '
+                <?php ($plugin->hide) ? $li .='' : $li .= '
                 <li class="nav-item">
                         <a href="'.route('admin.alat.deskripsi', ['package' => $plugin->package]).'" class="nav-link '.(($route_name == 'admin.alat.deskripsi' && isset(\Route::current()->parameters['package']) && \Route::current()->parameters['package'] == $plugin->package) ? 'active' : '').'">
                             <i class="far fa-circle nav-icon"></i>
@@ -148,7 +148,19 @@
                             <p>Prioritas</p>
                         </a>
                     </li>
-                    {!! $li !!}
+
+                    <li class="nav-item has-treeview {{ $ada ? 'menu-open' : '' }}">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon far fa-eye"></i>
+                            <p>
+                            Sedang Berjalan
+                            <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            {!! $li !!}
+                        </ul>
+                    </li>
                 </ul>
             </li>
         @endif

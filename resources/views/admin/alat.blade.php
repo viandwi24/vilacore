@@ -28,7 +28,7 @@
                 </thead>
                 <tbody>
                     <?php $not_compatible = 0; ?>
-                    @foreach (plugin()->getAllWithInfo() as $plugin)
+                    @foreach (plugin()->getAllWithInfo(false, false) as $plugin)
                         <tr>
                             <td>{{ $plugin->name }}</td>
                             <td><span class="badge badge-{{ $plugin->status ? 'success' : 'danger' }}">{{ $plugin->status ? 'Aktif' : 'Tidak Aktif' }}</span></td>

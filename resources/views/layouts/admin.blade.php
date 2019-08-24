@@ -122,7 +122,8 @@
       function checklaststatepushmenu() {
         $state = localStorage.getItem("pushmenu");
         if ($state == null) {
-          localStorage.setItem("pushmenu", false);
+          $state = true;
+          localStorage.setItem("pushmenu", true);
         }
 
         if ($state == "false") {

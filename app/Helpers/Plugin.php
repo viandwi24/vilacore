@@ -17,36 +17,59 @@ class Plugin {
         return self::$coreLoad;
     }
 
-    public static function getAll($enableOnly = false)
+    public static function getAll($enableOnly = false, $hideShow = true)
     {
         // error_reporting(E_ERROR);
         $list = file_get_contents(app_path('Core/list.json'));
         $list = json_decode($list, true);
 
-        // error_reporting();
         $show = $enableOnly ? $list['enable'] : $list['load'];
-
-        foreach ($list['hide'] as $item) {
-            $search = array_search($item, $show);
-            if (!$search === false) {
-                unset($show[$search]);
+        
+        if(!$hideShow) {
+            foreach ($list['hide'] as $item) {
+                $search = array_search($item, $show);
+                if (!$search === false) {
+                    unset($show[$search]);
+                }
             }
         }
+
 
         return $show;
     }
 
-    public static function getAllWithInfo($enableOnly = false)
+    public static function getAllWithInfo($enableOnly = false, $hideShow = true)
     {
-        $lists = self::getAll($enableOnly);
+        $listJSON = file_get_contents(app_path('Core/list.json'));
+        $listJSON = json_decode($listJSON, true);
+
+        $lists = self::getAll($enableOnly, $hideShow);
         $plugins = [];
-        // return [];
+        $show = $enableOnly ? $listJSON['enable'] : $listJSON['load'];
 
         foreach($lists as $list)
         {
             $plugin = self::getInfo($list);
+            $plugin = (array) $plugin;
+            $plugin['hide'] = false;
+            $plugin = (object) $plugin;
+
+
+            if($hideShow) {
+                foreach ($listJSON['hide'] as $item) {
+                    $search = array_search($item, $show);
+                    if (!$search === false && $show[$search] == $plugin->package) {
+                        $plugin = (array) $plugin;
+                        $plugin['hide'] = true;
+                        $plugin = (object) $plugin;
+                    }
+                }
+            }
+
             array_push($plugins, (object) $plugin);
         }
+        
+        
 
         return $plugins;
     }
@@ -58,7 +81,6 @@ class Plugin {
 
     public static function getActive()
     {
-        // dd(get_parent_class())  ;
         return self::$active;
     }
 
