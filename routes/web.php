@@ -21,6 +21,7 @@ Route::group([
     $alat_enable = env('PLUGIN_SETTING_SHOW', true);
     if ($alat_enable) {
         Route::get('/alat', function () {
+                // dd(env('VILACORE_CORE_VERSION'));
             return view('admin.alat');
         })->name('alat');
         Route::get('/alat/d/{package}', function ($package) {
